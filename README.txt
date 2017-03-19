@@ -11,3 +11,7 @@ Documentation:
 
    http://www.mikrocontroller.net/articles/IRSND
    http://www.mikrocontroller.net/articles/IRSND_-_english
+
+19/03/2017:
+Add support of stm32f103c8t6 @ libopencm3
+

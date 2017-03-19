@@ -30,7 +30,7 @@
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 #ifndef F_INTERRUPTS
-#  define F_INTERRUPTS                          15000   // interrupts per second, min: 10000, max: 20000, typ: 15000
+#  define F_INTERRUPTS                          20000   // interrupts per second, min: 10000, max: 20000, typ: 15000
 #endif
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,9 +51,9 @@
 
 // typical protocols, disable here!             Enable  Remarks                 F_INTERRUPTS            Program Space
 #define IRMP_SUPPORT_SIRCS_PROTOCOL             1       // Sony SIRCS           >= 10000                 ~150 bytes
-#define IRMP_SUPPORT_NEC_PROTOCOL               1       // NEC + APPLE          >= 10000                 ~300 bytes
-#define IRMP_SUPPORT_SAMSUNG_PROTOCOL           1       // Samsung + Samsg32    >= 10000                 ~300 bytes
-#define IRMP_SUPPORT_KASEIKYO_PROTOCOL          1       // Kaseikyo             >= 10000                 ~250 bytes
+#define IRMP_SUPPORT_NEC_PROTOCOL               0       // NEC + APPLE          >= 10000                 ~300 bytes
+#define IRMP_SUPPORT_SAMSUNG_PROTOCOL           1      // Samsung + Samsg32    >= 10000                 ~300 bytes
+#define IRMP_SUPPORT_KASEIKYO_PROTOCOL          0      // Kaseikyo             >= 10000                 ~250 bytes
 
 // more protocols, enable here!                 Enable  Remarks                 F_INTERRUPTS            Program Space
 #define IRMP_SUPPORT_JVC_PROTOCOL               0       // JVC                  >= 10000                 ~150 bytes
@@ -174,6 +174,10 @@
 #  define IRMP_PIN                              P0_22                   // use P1_27 on LPC1347
 #  define IRMP_PINMODE                          PullUp                  // hardware dependent
 
+#elif defined(STM32F1)
+#define IRMP_RCC_PORT               RCC_GPIOB
+#define IRMP_PORT_LETTER            GPIOB
+#define IRMP_PIN                    GPIO12
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Handling of unknown target system: DON'T CHANGE
  *---------------------------------------------------------------------------------------------------------------------------------------------------

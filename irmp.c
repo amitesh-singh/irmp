@@ -2220,6 +2220,10 @@ irmp_init (void)
 #elif defined(__MBED__)
     gpio_init_in_ex(&gpioIRin, IRMP_PIN, IRMP_PINMODE);                 // initialize input for IR diode
 
+#elif defined(STM32F1)
+    rcc_periph_clock_enable(IRMP_RCC_PORT);
+    gpio_set_mode(IRMP_PORT_LETTER, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT,
+                  IRMP_PIN);
 #else                                                                   // AVR
     IRMP_PORT &= ~(1<<IRMP_BIT);                                        // deactivate pullup
     IRMP_DDR &= ~(1<<IRMP_BIT);                                         // set pin to input
@@ -2791,6 +2795,8 @@ irmp_ISR (void)
 #elif defined(__MBED__)
     //irmp_input = inputPin;
     irmp_input = gpio_read (&gpioIRin);
+#elif defined(STM32F1)
+    irmp_input = gpio_get(IRMP_PORT_LETTER, IRMP_PIN);
 #else
     irmp_input = input(IRMP_PIN);
 #endif
@@ -4006,7 +4012,7 @@ irmp_ISR (void)
 #if IRMP_SUPPORT_NEC_PROTOCOL == 1
                             else if ((irmp_param.protocol == IRMP_NEC_PROTOCOL || irmp_param.protocol == IRMP_NEC42_PROTOCOL) && irmp_bit == 0)
                             {                                                               // it was a non-standard repetition frame
-#ifdef ANALYZE                                                                              // with 4500µs pause instead of 2250µs
+#ifdef ANALYZE                                                                              // with 4500ï¿½s pause instead of 2250ï¿½s
                                 ANALYZE_PRINTF ("Detected non-standard repetition frame, switching to NEC repetition\n");
 #endif // ANALYZE
                                 if (key_repetition_len < NEC_FRAME_REPEAT_PAUSE_LEN_MAX)
@@ -5280,12 +5286,12 @@ get_fdc_key (uint_fast16_t cmd)
     static uint8_t key_table[128] =
     {
      // 0     1    2    3    4    5    6    7    8     9     A     B     C     D    E    F
-         0,   '^', '1', '2', '3', '4', '5', '6', '7',  '8',  '9',  '0',  0xDF, '´', 0,   '\b',
+         0,   '^', '1', '2', '3', '4', '5', '6', '7',  '8',  '9',  '0',  0xDF, 'ï¿½', 0,   '\b',
         '\t', 'q', 'w', 'e', 'r', 't', 'z', 'u', 'i',  'o',  'p',  0xFC, '+',   0,   0,   'a',
         's',  'd', 'f', 'g', 'h', 'j', 'k', 'l', 0xF6, 0xE4, '#',  '\r', 0,    '<', 'y', 'x',
         'c',  'v', 'b', 'n', 'm', ',', '.', '-', 0,    0,    0,    0,    0,    ' ', 0,   0,
 
-         0,   '°', '!', '"', '§', '$', '%', '&', '/',  '(',  ')',  '=',  '?',  '`', 0,   '\b',
+         0,   'ï¿½', '!', '"', 'ï¿½', '$', '%', '&', '/',  '(',  ')',  '=',  '?',  '`', 0,   '\b',
         '\t', 'Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I',  'O',  'P',  0xDC, '*',  0,   0,   'A',
         'S',  'D', 'F', 'G', 'H', 'J', 'K', 'L', 0xD6, 0xC4, '\'', '\r', 0,    '>', 'Y', 'X',
         'C',  'V', 'B', 'N', 'M', ';', ':', '_', 0,    0,    0,    0,    0,    ' ', 0,   0

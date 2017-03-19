@@ -65,6 +65,12 @@
 #elif defined(__MBED__)                                                             // mbed platform
 // #include "mbed.h"                                                                // if mbed.h is used, source must be compiled as cpp
 #include "gpio_api.h"
+#elif defined(STM32F1)
+#include <libopencm3/cm3/common.h>
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3/stm32/gpio.h>
+
+#define F_CPU STM32F1
 #else
 #  define ATMEL_AVR                                                                 // ATMEL AVR
 #endif
